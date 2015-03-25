@@ -4,10 +4,18 @@ import urllib
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
+import cloudstorage as gcs
 
 import jinja2
 import webapp2
 
+from google.appengine.api import app_identity
+
+my_default_retry_params = gcs.RetryParams(initial_delay=0.2,
+                                          max_delay=5.0,
+                                          backoff_factor=2,
+                                          max_retry_period=15)
+gcs.set_default_retry_params(my_default_retry_params)
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -62,12 +70,19 @@ class MainPage(webapp2.RequestHandler):
             url = users.create_login_url(self.request.uri)
             url_linktext = 'Login'
 
+        bucket_name = 'testcat'#os.environ.get('BUCKET_NAME',
+                     #            app_identity.get_default_gcs_bucket_name())
+        bucket = '/' + bucket_name
+        filename = bucket + '/nt_197810_n07_v01_s.bin'
+
+
         template_values = {
             'user': user,
             'greetings': greetings,
             'guestbook_name': urllib.quote_plus(guestbook_name),
             'url': url,
             'url_linktext': url_linktext,
+            'teststring': filename,
         }
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
