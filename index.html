@@ -7,33 +7,52 @@
   </head>
   <!-- [END head_html] -->
   <body>
-    <p>{{teststring}}</p>
-    {% for greeting in greetings %}
-      {% if greeting.author %}
-        <b>{{ greeting.author.email }}
-          {% if user and user.user_id() == greeting.author.identity %}
-            (You)
-          {% endif %}
-        </b> wrote:
-      {% else %}
-       An anonymous person wrote:
-      {% endif %}
-      <blockquote>{{ greeting.content }}</blockquote>
-    {% endfor %}
+    <div id = "system_name">
+        <p>Cloud Based Cryosphere Data Query System</p>
+    </div>
 
-    <form action="/sign?guestbook_name={{ guestbook_name }}" method="post">
-      <div><textarea name="content" rows="3" cols="60"></textarea></div>
-      <div><input type="submit" value="Sign Guestbook"></div>
-    </form>
+    <div id = "config_panel">
+        <div class = "config_datasel">
+            <p>DataSets</p>
+            <select>
+             <option value="nsidc-0051">SeaIce_Extent</option>
+             <option value="nsidc-005">BrightnessTemperature</option>
+            </select>
+        </div>
 
-    <hr>
+         <div class = "config_compress">
+            <p>Algorithms</p>
+            <select>
+             <option value="compress_1">Aggregate</option>
+             <option value="compress_2">SparseCoding</option>
+            </select>
+        </div>
 
-    <form>Guestbook name:
-      <input value="{{ guestbook_name }}" name="guestbook_name">
-      <input type="submit" value="switch">
-    </form>
+        <div class = "config_evaluation">
+            <p>Evaluation</p>
+            <select>
+             <option value="eva_on">Enable</option>
+             <option value="eva_off">Disable</option>
+            </select>
+        </div>
 
-    <a href="{{ url|safe }}">{{ url_linktext }}</a>
+    </div>
+   
+    <div id = "display_1">
+        <img src = "http://earthobservatory.nasa.gov/Features/WorldOfChange/images/sea_ice_south/spseaice_woc_200002.jpg"></img>
+    </div>
+
+    <div id = "console">
+        <div>
+         <p>input your query: natrual language is ok!</p>
+        </div>
+
+         <div>
+          <p>Query Time<p>
+          <p>Accuracy Comparison</p>
+         </div>
+
+    </div>
 
   </body>
 </html>
