@@ -43,13 +43,16 @@
     </div>
 
     <div id = "console">
-        <div>
-         <p>input your query: natrual language is ok!</p>
+        <div class = "input">
+         <p>Query Input:</p>
+         <form action="/user_query">
+            <div><textarea name="query" rows="2" cols="120"></textarea></div>
+            <div><input type="submit" value="Input Query"></div>
+         </form>
         </div>
 
-         <div>
-          <p>Query Time<p>
-          <p>Accuracy Comparison</p>
+         <div class = "output">
+          <p>Query Time and Accuracy Comparison:</p>
          </div>
 
     </div>
