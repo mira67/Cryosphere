@@ -42,10 +42,10 @@ class MainPage(webapp2.RequestHandler):
 
 class Query(webapp2.RequestHandler):
 
-    def get(self):
+    def post(self):
         user_query = self.request.get('query')
         #get query and test
-        self.response.out.write(user_query)
+        self.redirect('/?' + 'query_run')
 
 application = webapp2.WSGIApplication([
     ('/', MainPage),
