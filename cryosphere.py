@@ -38,7 +38,17 @@ class MainPage(webapp2.RequestHandler):
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
-# [END main_page]
+        
+        for i in range(1,11):
+            day_seaice = Tot_seaice(year='2013',
+            month='Jan',
+            day='1',
+            extent=5+i
+            )
+            #store data
+            day_seaice_key = day_seaice.put()
+
+        # [END main_page]
 
 class Query(webapp2.RequestHandler):
 
@@ -47,6 +57,13 @@ class Query(webapp2.RequestHandler):
         #get query and test
         self.redirect('/?' + 'query_run')
 
+# test here, then move to compute engine
+class Tot_seaice(ndb.Model):
+    year = ndb.StringProperty()
+    month = ndb.StringProperty()
+    day = ndb.StringProperty()
+    extent = ndb.IntegerProperty()
+          
 application = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/user_query', Query),
