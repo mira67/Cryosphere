@@ -46,9 +46,8 @@
         <div class = "input">
          <p>Query Input:</p>
          <form action="/user_query" method="post">
-            <div><input type = "text" name="query" value="%(query)s"></input></div>
+            <div><textarea name="query" rows="2" cols="120"></textarea></div>
             <div><input type="submit" value="Input Query"></div>
-            <div>{{console}}</div>
          </form>
         </div>
 
@@ -61,3 +60,4 @@
   </body>
 </html>
 {% endautoescape %}
+

@@ -26,9 +26,6 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True)
 # [END imports]
 
-DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
-
-
 # [START main_page]
 class MainPage(webapp2.RequestHandler):
 
@@ -39,14 +36,14 @@ class MainPage(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
         
-        for i in range(1,11):
-            day_seaice = Tot_seaice(year='2013',
-            month='Jan',
-            day='1',
-            extent=5+i
-            )
+        #for i in range(1,11):
+         #   day_seaice = Tot_seaice(year='2013',
+          #  month='Jan',
+           # day='1',
+            #extent=5+i
+            #)
             #store data
-            day_seaice_key = day_seaice.put()
+            #day_seaice_key = day_seaice.put()
 
         # [END main_page]
 
@@ -54,8 +51,23 @@ class Query(webapp2.RequestHandler):
 
     def post(self):
         user_query = self.request.get('query')
-        #get query and test
-        self.redirect('/?' + 'query_run')
+        user_query_c = user_query.upper()
+        #QUERY for MAX MIN EXTENT, result should be the day, and show image
+        if user_query_c == 'MAX MIN EXTENT':
+        #call the function
+            template_values = {
+            'console': user_query_c,
+            }
+
+            template = JINJA_ENVIRONMENT.get_template('index.html')
+            self.response.write(template.render(template_values)) 
+        #QUERY for Anomaly analysis, show the trend and std
+        elif user_query_c == 'SEA ICE EXTENT ANOMALY':
+            self.response.write("here is the query %s" % user_query_c) 
+        else:
+            self.response.write('This query might be supported in future version') 
+        #QUERY is currently no supported
+        #self.redirect('/?' + 'query_run')
 
 # test here, then move to compute engine
 class Tot_seaice(ndb.Model):
