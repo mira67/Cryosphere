@@ -46,14 +46,16 @@
         <div class = "input">
          <p>Query Input:</p>
          <form action="/user_query" method="post">
-            <div><input type = "text" name="query" value="%(query)s"></input></div>
+            <div><input type = "text" name="query" value="input your query"></input></div>
             <div><input type="submit" value="Input Query"></div>
-            <div>{{console}}</div>
-         </form>
+        </form>
         </div>
 
          <div class = "output">
           <p>Query Time and Accuracy Comparison:</p>
+           <div>{{user_input}}</div>
+           <div>{{query_result}}</div> 
+           <div>{{proc_time}}</div>
          </div>
 
     </div>
