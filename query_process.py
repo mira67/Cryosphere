@@ -6,7 +6,7 @@ import numpy as np
 import array
 import math
 import sys
-
+from jpeg_bs_decoder import JpegDecoder
 my_default_retry_params = gcs.RetryParams(initial_delay=0.2,
                                           max_delay=5.0,
                                           backoff_factor=2,
@@ -19,7 +19,7 @@ MONTH_RP = '/monthly'
 DAILY_RP = '/daily'
 MONTH_CP = '/monthly_cmp'
 DAILY_CP = '/daily_cmp'
-
+TEST_CP = '/condense_jpg'
 class QueryProc(object):
 
     def blk_total_seaice(self,blk):
@@ -65,6 +65,7 @@ class QueryProc(object):
                 min_seaice = total_seaice
 
             gcs_file.close()
+            #for testing, DeadlineExceededError
             if i > 5:
                 break
 
@@ -76,8 +77,54 @@ class QueryProc(object):
         return result 
 
     def maxmin_proc_cmp(self):
-        pass
-        return results #a list or dict
+        #get files list from gs
+        objs = gcs.listbucket(BUCKET+TEST_CP)
+        filelist = []
+        for obj in objs:
+            filelist.append(obj.filename)
+        
+        #go through and calculate, need refine into modules later
+        max_seaice = 0
+        min_seaice = float('inf')
+        result = []
+        i = 0
+        max_id = 0
+        min_id = 0
+        gcs_file = []
+        raw_data = []
+        dclist = []
+
+        for file in filelist:
+            i = i + 1
+            filename = file
+            gcs_file = gcs.open(filename,mode='r')
+            
+            jd = JpegDecoder()
+            dclist = jd.jpdecode(gcs_file)
+            gcs_file.close()
+
+            #a new function
+            ###parsed_dc = np.asarray(dclist)
+            total_seaice = sum(dclist)
+            if total_seaice >= max_seaice:
+                max_id = i-1
+                max_seaice = total_seaice
+                min_seaice = max_seaice
+            if total_seaice <= min_seaice:
+                min_id = i-1
+                min_seaice = total_seaice
+
+            gcs_file.close()
+            #for testing, DeadlineExceededError
+            if i > 5:
+                break
+
+        result.append(max_seaice)
+        result.append(max_id)
+        result.append(min_seaice)
+        result.append(min_id)
+
+        return result #a list or dict
 
 
 

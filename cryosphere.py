@@ -60,9 +60,12 @@ class Query(webapp2.RequestHandler):
             query_process = QueryProc()
 
             start_time = time.time()
-            query_results = query_process.maxmin_proc_raw()
+            query_raw_results = query_process.maxmin_proc_raw()
             query_raw_time = time.time() - start_time                        
-            #query_results = query_process.maxmin_proc_cmp()
+            
+            start_time = time.time()
+            query_cmp_results = query_process.maxmin_proc_cmp()
+            query_cmp_time = time.time() - start_time
 
             #store image and just show, no interactive as first version
 
@@ -70,8 +73,8 @@ class Query(webapp2.RequestHandler):
             #call the function, need wrap this update into a function
             template_values = {
             'user_input': "User's Query: " + user_query_c,
-            'query_result': query_results,
-            'proc_time': "Query process time: %s" % query_raw_time,
+            'query_result': "Raw: " + str(query_raw_results) + " " + "vs " +"CMP: " + str(query_cmp_results),
+            'proc_time': "Process raw time: %s vs Process cmp time: %s" % (query_raw_time, query_cmp_time)
             }
 
             template = JINJA_ENVIRONMENT.get_template('index.html')
