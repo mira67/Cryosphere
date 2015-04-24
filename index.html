@@ -1,65 +1,108 @@
+
 <!DOCTYPE html>
 {% autoescape true %}
-<html>
-  <!-- [START head_html] -->
+<html lang="en">
   <head>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Cloud Based Cryosphere Data Query System</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="stylesheets/jumbotron-narrow.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="stylesheets/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
   </head>
-  <!-- [END head_html] -->
+
   <body>
-    <div id = "system_name">
-        <p>Cloud Based Cryosphere Data Query System</p>
-    </div>
 
-    <div id = "config_panel">
-        <div class = "config_datasel">
-            <p>DataSets</p>
-            <select>
-             <option value="nsidc-0051">SeaIce_Extent</option>
-             <option value="nsidc-005">BrightnessTemperature</option>
-            </select>
-        </div>
+    <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" class="active"><a href="#">Home</a></li>
+            <li role="presentation"><a href="#">About</a></li>
+            <li role="presentation"><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+        <h4 class="text-muted">Cloud Based Cryosphere Data Query System</h4>
+      </div>
 
-         <div class = "config_compress">
-            <p>Algorithms</p>
-            <select>
-             <option value="compress_1">Aggregate</option>
-             <option value="compress_2">SparseCoding</option>
-            </select>
-        </div>
-
-        <div class = "config_evaluation">
-            <p>Evaluation</p>
-            <select>
-             <option value="eva_on">Enable</option>
-             <option value="eva_off">Disable</option>
-            </select>
-        </div>
-
-    </div>
-   
-    <div id = "display_1">
+     <div class="panel panel-default">
+        <div class="panel-body">
         <img src = "http://earthobservatory.nasa.gov/Features/WorldOfChange/images/sea_ice_south/spseaice_woc_200002.jpg"></img>
+        </div>
     </div>
 
-    <div id = "console">
-        <div class = "input">
-         <p>Query Input:</p>
-         <form action="/user_query" method="post">
-            <div><input type = "text" name="query" value="input your query"></input></div>
-            <div><input type="submit" value="Input Query"></div>
+    <div class="ex">
+        <form id='data' name='data' method='post' action=' '>   
+            <p><label>Select Dataset</label></p>
+            <select class="dropdown-select" onchange=filter.submit() name='dd1mob1' id='dd1mob1'>
+                <option>nsidc0051</option>
+                <option>nsidc0001</option>" . $options . "
+            </select>
         </form>
-        </div>
+        <form class="ey" id='method' name='method' method='post' action=''> 
+            <p><label>Select Methods</label></p>
+            <select class="dropdown-select" onchange=filter.submit() name='dd2mob1' id='dd2mob1'>
+                <option>JPEGlike</option>
+                <option>Thresholding</option>" . $options . "
+            </select>
+        </form>
 
-         <div class = "output">
-          <p>Query Time and Accuracy Comparison:</p>
+         <form class="ey" id='eva' name='eva' method='post' action=''> 
+            <p><label>Evaluation</label></p>
+            <select class="dropdown-select" onchange=filter.submit() name='dd2mob1' id='dd2mob1'>
+                <option>Enable</option>
+                <option>Disable</option>" . $options . "
+            </select>
+        </form>
+
+    </div>
+
+        <div class="divr">
+        <div class="input-group">
+         <form action="/user_query" method="post">
+            <input class="form-control" placeholder="Query..." type = "text" name="query"></input>
+            <input class="btn btn-default" type="submit" value="Input Query">
+        </form>
+     </div><!-- /input-group -->
+    </div><!-- /.row -->
+
+    <div class="console">
+      <div class="panel-heading">
+        <h3 class="panel-title">Query Output :)</h3>
+      </div>
+      <div class="panel-body">
+         <p>Query Time and Accuracy Comparison:</p>
            <div>{{user_input}}</div>
            <div>{{query_result}}</div> 
            <div>{{proc_time}}</div>
-         </div>
+      </div>
 
-    </div>
+      <footer class="footer">
+        <p>&copy; Qi LIU 2015</p>
+      </footer>
 
+    </div> <!-- /container -->
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
 {% endautoescape %}

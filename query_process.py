@@ -19,7 +19,7 @@ MONTH_RP = '/monthly'
 DAILY_RP = '/daily'
 MONTH_CP = '/monthly_cmp'
 DAILY_CP = '/daily_cmp'
-TEST_CP = '/condense_jpg'
+
 class QueryProc(object):
 
     def blk_total_seaice(self,blk):
@@ -41,8 +41,8 @@ class QueryProc(object):
         min_seaice = float('inf')
         result = []
         i = 0
-        max_id = 0
-        min_id = 0
+        max_id = None
+        min_id = None
         gcs_file = []
         raw_data = []
         for file in filelist:
@@ -57,11 +57,11 @@ class QueryProc(object):
             raw_data = raw_data.reshape(316,332);
             total_seaice = self.blk_total_seaice(raw_data)
             if total_seaice >= max_seaice:
-                max_id = i-1
+                max_id = filename[20:]
                 max_seaice = total_seaice
                 min_seaice = max_seaice
             if total_seaice <= min_seaice:
-                min_id = i-1
+                min_id = filename[20:]
                 min_seaice = total_seaice
 
             gcs_file.close()
@@ -78,18 +78,18 @@ class QueryProc(object):
 
     def maxmin_proc_cmp(self):
         #get files list from gs
-        objs = gcs.listbucket(BUCKET+TEST_CP)
+        objs = gcs.listbucket(BUCKET+MONTH_CP)
         filelist = []
         for obj in objs:
             filelist.append(obj.filename)
         
         #go through and calculate, need refine into modules later
-        max_seaice = 0
+        max_seaice = -float('inf')
         min_seaice = float('inf')
         result = []
         i = 0
-        max_id = 0
-        min_id = 0
+        max_id = None
+        min_id = None
         gcs_file = []
         raw_data = []
         dclist = []
@@ -107,11 +107,11 @@ class QueryProc(object):
             ###parsed_dc = np.asarray(dclist)
             total_seaice = sum(dclist)
             if total_seaice >= max_seaice:
-                max_id = i-1
+                max_id = filename[20:]
                 max_seaice = total_seaice
                 min_seaice = max_seaice
             if total_seaice <= min_seaice:
-                min_id = i-1
+                min_id = filename[20:]
                 min_seaice = total_seaice
 
             gcs_file.close()
